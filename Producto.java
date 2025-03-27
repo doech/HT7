@@ -5,7 +5,7 @@ public class Producto {
     private String descripcion;
     private String cantidadesPorTalla;
 
-    // Constructor que coincide con los parámetros usados en Main.java
+    
     public Producto(String sku, String nombre, String descripcion, String cantidadesPorTalla) {
         this.sku = sku;
         this.nombre = nombre;
@@ -13,7 +13,6 @@ public class Producto {
         this.cantidadesPorTalla = cantidadesPorTalla;
     }
 
-    // Getters y setters (opcional, si los necesitas)
     public String getSku() {
         return sku;
     }

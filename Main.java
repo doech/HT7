@@ -1,14 +1,12 @@
 import java.util.Scanner;
 
 public class Main {
-    private static BinarySearchTree bstSKU = new BinarySearchTree(); // Árbol para SKU
-    private static BinarySearchTree bstNombre = new BinarySearchTree(); // Árbol para nombres de producto
+    private static BinarySearchTree<String, Producto> bst = new BinarySearchTree<>();
 
     public static void main(String[] args) {
-        // Cargar productos desde el archivo CSV al iniciar el programa
-        String archivo = "productos.csv"; // Asegúrate de que el archivo esté en el directorio correcto
+        String archivo = "productos.csv"; 
         CargarArchivo cargador = new CargarArchivo();
-        cargador.cargarProductos(archivo, bstSKU, bstNombre);
+        cargador.cargarProductos(archivo, bst); 
 
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
@@ -16,13 +14,14 @@ public class Main {
         while (!salir) {
             System.out.println("MENÚ");
             System.out.println("1. Añadir Producto");
-            System.out.println("2. Mostrar Productos (por SKU o Nombre)");
-            System.out.println("3. Buscar Producto (por SKU o Nombre)");
-            System.out.println("4. Salir");
+            System.out.println("2. Mostrar Productos");
+            System.out.println("3. Buscar Producto");
+            System.out.println("4. Editar Producto");
+            System.out.println("5. Salir");
             System.out.print("Elija una opción: ");
 
             int opcion = scanner.nextInt();
-            scanner.nextLine();  // consumir el salto de línea
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -35,6 +34,9 @@ public class Main {
                     buscarProducto(scanner);
                     break;
                 case 4:
+                    editarProducto(scanner);
+                    break;
+                case 5:
                     salir = true;
                     break;
                 default:
@@ -56,8 +58,7 @@ public class Main {
         String cantidadesPorTalla = scanner.nextLine();
 
         Producto producto = new Producto(sku, nombre, descripcion, cantidadesPorTalla);
-        bstSKU.insert(sku, producto); 
-        bstNombre.insert(nombre, producto); 
+        bst.insert(sku, producto); 
 
         System.out.println("Producto añadido");
     }
@@ -65,14 +66,14 @@ public class Main {
     private static void mostrarProductos(Scanner scanner) {
         System.out.print("Mostrar por (1: SKU, 2: Nombre): ");
         int eleccion = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
 
         if (eleccion == 1) {
             System.out.println("\nProductos ordenados por SKU:");
-            bstSKU.recorrer(); 
+            bst.recorrer();
         } else if (eleccion == 2) {
             System.out.println("\nProductos ordenados por Nombre:");
-            bstNombre.recorrer(); 
+            bst.recorrer(); // The tree is still ordered by SKU, but all products are displayed.
         } else {
             System.out.println("Elección inválida.");
         }
@@ -80,36 +81,61 @@ public class Main {
 
     private static void buscarProducto(Scanner scanner) {
         System.out.print("Buscar por (1: SKU, 2: Nombre): ");
-        if (scanner.hasNextInt()) { // Validar que la entrada sea un número
-            int eleccion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+        int eleccion = scanner.nextInt();
+        scanner.nextLine();
 
-            if (eleccion == 1) {
-                System.out.print("Ingrese el SKU: ");
-                String sku = scanner.nextLine();
-                Producto producto = bstSKU.search(sku);
-                if (producto != null) {
-                    System.out.println("Producto encontrado: " + producto);
-                } else {
-                    System.out.println("Producto no encontrado.");
-                }
-            } else if (eleccion == 2) {
-                System.out.print("Ingrese el Nombre: ");
-                String nombre = scanner.nextLine();
-                Producto producto = bstNombre.search(nombre);
-                if (producto != null) {
-                    System.out.println("Producto encontrado: " + producto);
-                } else {
-                    System.out.println("Producto no encontrado.");
-                }
+        if (eleccion == 1) {
+            System.out.print("Ingrese el SKU: ");
+            String sku = scanner.nextLine();
+            Producto producto = bst.search(sku);
+            if (producto != null) {
+                System.out.println("Producto encontrado: " + producto);
             } else {
-                System.out.println("Elección inválida.");
+                System.out.println("Producto no encontrado.");
+            }
+        } else if (eleccion == 2) {
+            System.out.print("Ingrese el Nombre: ");
+            String nombre = scanner.nextLine();
+            Producto producto = bst.searchPorNombre(nombre);
+            if (producto != null) {
+                System.out.println("Producto encontrado: " + producto);
+            } else {
+                System.out.println("Producto no encontrado.");
             }
         } else {
-            System.out.println("Entrada inválida. Por favor, ingrese 1 para SKU o 2 para Nombre.");
-            scanner.nextLine(); // Consumir la entrada inválida
+            System.out.println("Elección inválida.");
         }
     }
 
+    private static void editarProducto(Scanner scanner) {
+        System.out.print("Ingrese el SKU del producto a editar: ");
+        String sku = scanner.nextLine();
+        Producto producto = bst.search(sku);
+
+        if (producto != null) {
+            System.out.println("Producto encontrado: " + producto);
+            System.out.print("Ingrese nuevo Nombre (dejar vacío para no cambiar): ");
+            String nuevoNombre = scanner.nextLine();
+            if (!nuevoNombre.isEmpty()) {
+                producto.setNombre(nuevoNombre);
+            }
+
+            System.out.print("Ingrese nueva Descripción (dejar vacío para no cambiar): ");
+            String nuevaDescripcion = scanner.nextLine();
+            if (!nuevaDescripcion.isEmpty()) {
+                producto.setDescripcion(nuevaDescripcion);
+            }
+
+            System.out.print("Ingrese nuevas Cantidades por talla (dejar vacío para no cambiar): ");
+            String nuevasCantidades = scanner.nextLine();
+            if (!nuevasCantidades.isEmpty()) {
+                producto.setCantidadesPorTalla(nuevasCantidades);
+            }
+
+            System.out.println("Producto actualizado: " + producto);
+        } else {
+            System.out.println("Producto no encontrado.");
+        }
+    }
 }
 
