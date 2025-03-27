@@ -47,17 +47,20 @@ public class BinarySearchTree<K, V> {
      * @return el valor del nodo
      */
     public V search(K key) {
-        TreeNode<K, V> current = root;
-        while (current != null) {
-            if (key.equals(current.key)) {
-                return current.value;
-            } else if (key.toString().compareTo(current.key.toString()) < 0) {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
+        return search1(root, key);
+    }
+
+    public V search1(TreeNode<K, V> node, K key) {
+        if (node == null) {
+            return null; 
         }
-        return null;
+        if (key.equals(node.key)) {
+            return node.value; 
+        } else if (key.toString().compareTo(node.key.toString()) < 0) {
+            return search1(node.left, key); 
+        } else {
+            return search1(node.right, key); 
+        }
     }
 
     /**
