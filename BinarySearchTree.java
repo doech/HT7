@@ -1,5 +1,6 @@
 public class BinarySearchTree {
     private TreeNode root;
+
     public void insert(String key, Producto value) {
         TreeNode newNode = new TreeNode(key, value);
         if (root == null) {
@@ -37,7 +38,22 @@ public class BinarySearchTree {
                 current = current.right;
             }
         }
-        
+        return null; 
+    }
+
+    public void recorrer() {
+        inOrderTraversal(root); 
+    }
+
+    private void recorrer(TreeNode node) {
+        if (node != null) {
+            recorrer(node.left); 
+            System.out.println(node.value); 
+            recorrer(node.right); 
+        }
+    }
+}
+
         return null; 
     }
 }
