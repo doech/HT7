@@ -50,7 +50,7 @@ public class BinarySearchTree<K, V> {
         return search1(root, key);
     }
 
-    public V search1(TreeNode<K, V> node, K key) {
+    private V search1(TreeNode<K, V> node, K key) {
         if (node == null) {
             return null; 
         }
