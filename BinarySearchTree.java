@@ -42,7 +42,7 @@ public class BinarySearchTree {
     }
 
     public void recorrer() {
-        inOrderTraversal(root); 
+        recorrer(root); 
     }
 
     private void recorrer(TreeNode node) {
@@ -51,10 +51,6 @@ public class BinarySearchTree {
             System.out.println(node.value); 
             recorrer(node.right); 
         }
-    }
-}
-
-        return null; 
     }
 }
 

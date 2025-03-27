@@ -5,16 +5,20 @@ public class Main {
     private static BinarySearchTree bstNombre = new BinarySearchTree(); // Árbol para nombres de producto
 
     public static void main(String[] args) {
+        // Cargar productos desde el archivo CSV al iniciar el programa
+        String archivo = "productos.csv"; // Asegúrate de que el archivo esté en el directorio correcto
+        CargarArchivo cargador = new CargarArchivo();
+        cargador.cargarProductos(archivo, bstSKU, bstNombre);
+
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
 
         while (!salir) {
-            System.out.println("\n---- MENÚ ----");
+            System.out.println("MENÚ");
             System.out.println("1. Añadir Producto");
             System.out.println("2. Mostrar Productos (por SKU o Nombre)");
             System.out.println("3. Buscar Producto (por SKU o Nombre)");
-            System.out.println("4. Cargar Productos desde CSV");
-            System.out.println("5. Salir");
+            System.out.println("4. Salir");
             System.out.print("Elija una opción: ");
 
             int opcion = scanner.nextInt();
@@ -31,9 +35,6 @@ public class Main {
                     buscarProducto(scanner);
                     break;
                 case 4:
-                    cargarProductosDesdeCSV();
-                    break;
-                case 5:
                     salir = true;
                     break;
                 default:
@@ -55,23 +56,23 @@ public class Main {
         String cantidadesPorTalla = scanner.nextLine();
 
         Producto producto = new Producto(sku, nombre, descripcion, cantidadesPorTalla);
-        bstSKU.insert(sku, producto); // Insertar por SKU
-        bstNombre.insert(nombre, producto); // Insertar por nombre
+        bstSKU.insert(sku, producto); 
+        bstNombre.insert(nombre, producto); 
 
-        System.out.println("¡Producto añadido exitosamente!");
+        System.out.println("Producto añadido");
     }
 
     private static void mostrarProductos(Scanner scanner) {
         System.out.print("Mostrar por (1: SKU, 2: Nombre): ");
         int eleccion = scanner.nextInt();
-        scanner.nextLine(); // consumir el salto de línea
+        scanner.nextLine(); 
 
         if (eleccion == 1) {
             System.out.println("\nProductos ordenados por SKU:");
-            bstSKU.recorrer(); // Mostrar por SKU
+            bstSKU.recorrer(); 
         } else if (eleccion == 2) {
             System.out.println("\nProductos ordenados por Nombre:");
-            bstNombre.recorrer(); // Mostrar por Nombre
+            bstNombre.recorrer(); 
         } else {
             System.out.println("Elección inválida.");
         }
@@ -79,35 +80,36 @@ public class Main {
 
     private static void buscarProducto(Scanner scanner) {
         System.out.print("Buscar por (1: SKU, 2: Nombre): ");
-        int eleccion = scanner.nextInt();
-        scanner.nextLine(); // consumir el salto de línea
+        if (scanner.hasNextInt()) { // Validar que la entrada sea un número
+            int eleccion = scanner.nextInt();
+            scanner.nextLine(); // Consumir el salto de línea
 
-        if (eleccion == 1) {
-            System.out.print("Ingrese el SKU: ");
-            String sku = scanner.nextLine();
-            Producto producto = bstSKU.search(sku);
-            if (producto != null) {
-                System.out.println("Producto encontrado: " + producto);
+            if (eleccion == 1) {
+                System.out.print("Ingrese el SKU: ");
+                String sku = scanner.nextLine();
+                Producto producto = bstSKU.search(sku);
+                if (producto != null) {
+                    System.out.println("Producto encontrado: " + producto);
+                } else {
+                    System.out.println("Producto no encontrado.");
+                }
+            } else if (eleccion == 2) {
+                System.out.print("Ingrese el Nombre: ");
+                String nombre = scanner.nextLine();
+                Producto producto = bstNombre.search(nombre);
+                if (producto != null) {
+                    System.out.println("Producto encontrado: " + producto);
+                } else {
+                    System.out.println("Producto no encontrado.");
+                }
             } else {
-                System.out.println("Producto no encontrado.");
-            }
-        } else if (eleccion == 2) {
-            System.out.print("Ingrese el Nombre: ");
-            String nombre = scanner.nextLine();
-            Producto producto = bstNombre.search(nombre);
-            if (producto != null) {
-                System.out.println("Producto encontrado: " + producto);
-            } else {
-                System.out.println("Producto no encontrado.");
+                System.out.println("Elección inválida.");
             }
         } else {
-            System.out.println("Elección inválida.");
+            System.out.println("Entrada inválida. Por favor, ingrese 1 para SKU o 2 para Nombre.");
+            scanner.nextLine(); // Consumir la entrada inválida
         }
     }
 
-    private static void cargarProductosDesdeCSV() {
-        // Aquí iría el código para leer y cargar productos desde un archivo CSV.
-        System.out.println("Cargando productos desde archivo CSV (por implementar)...");
-    }
 }
 
