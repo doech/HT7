@@ -1,8 +1,11 @@
 import java.util.Scanner;
 
+/**
+ * Ale Sierra #24405
+ * Clase main que controla el input del usuario y determina qué acción realizar
+ */
 public class Main {
     private static BinarySearchTree<String, Producto> bst = new BinarySearchTree<>();
-
     public static void main(String[] args) {
         String archivo = "productos.csv"; 
         CargarArchivo cargador = new CargarArchivo();
@@ -47,6 +50,12 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * método que añade un producto al bst.
+     * usa la clase Producto y el método insert de la clase BST.
+     *
+     * @param scanner para el input del usuario.
+     */
     private static void añadirProducto(Scanner scanner) {
         System.out.print("Ingrese SKU: ");
         String sku = scanner.nextLine();
@@ -63,6 +72,12 @@ public class Main {
         System.out.println("Producto añadido");
     }
 
+    /**
+     * método que le muestra los productos en orden por sku o por nombre.
+     * usa el método recorrer de la clas del BST
+     *
+     * @param scanner para el input del usuario.
+     */
     private static void mostrarProductos(Scanner scanner) {
         System.out.print("Mostrar por (1: SKU, 2: Nombre): ");
         int eleccion = scanner.nextInt();
@@ -73,12 +88,17 @@ public class Main {
             bst.recorrer();
         } else if (eleccion == 2) {
             System.out.println("\nProductos ordenados por Nombre:");
-            bst.recorrer(); // The tree is still ordered by SKU, but all products are displayed.
+            bst.recorrer(); 
         } else {
             System.out.println("Elección inválida.");
         }
     }
 
+    /**
+     * método que busca por sku o por nombre, usa los métodos search() y searchPorNombre() de la clase del BST.
+     *
+     * @param scanner para el input del usuario.
+     */
     private static void buscarProducto(Scanner scanner) {
         System.out.print("Buscar por (1: SKU, 2: Nombre): ");
         int eleccion = scanner.nextInt();
@@ -107,6 +127,12 @@ public class Main {
         }
     }
 
+    /**
+     * método que le permite al usuario editar un producti
+     * usa el método search() de la clase BST.
+     *
+     * @param scanner para el input del usuario.
+     */
     private static void editarProducto(Scanner scanner) {
         System.out.print("Ingrese el SKU del producto a editar: ");
         String sku = scanner.nextLine();

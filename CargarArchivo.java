@@ -2,13 +2,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Ale Sierra #24405
+ * clase que controla la carga de productos desde un archivo CSV
+ * y los inserta en un árbol binario de búsqueda.
+ */
 public class CargarArchivo {
 
     /**
-     * Carga los productos desde un archivo CSV y los inserta en un árbol binario de búsqueda.
-     *
-     * @param archivo Ruta del archivo CSV.
-     * @param bst Árbol binario de búsqueda donde se insertarán los productos.
+     * método que lee el archivo e identifica las partes de cada línea al separarlas por coma
+     * y crea un producto con los atributos de la línea, el cual se inserta en el árbol.
+     * @param archivo 
+     * @param bst     
      */
     public void cargarProductos(String archivo, BinarySearchTree<String, Producto> bst) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {

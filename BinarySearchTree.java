@@ -1,6 +1,19 @@
+/**
+ * Ale Sierra #24405
+ * Clase que representa un árbol binario de búsqueda y sus operaciones.
+ *
+ * @param <K> tipo generico del key.
+ * @param <V> tipo generico del value.
+ */
 public class BinarySearchTree<K, V> {
     private TreeNode<K, V> root;
 
+    /**
+     * método que inserta un nodo en el árbol
+     *
+     * @param key   
+     * @param value 
+     */
     public void insert(K key, V value) {
         TreeNode<K, V> newNode = new TreeNode<>(key, value);
         if (root == null) {
@@ -27,6 +40,12 @@ public class BinarySearchTree<K, V> {
         }
     }
 
+    /**
+     * método que busca un nodo en el árbol por sku
+     *
+     * @param key que será sku en este caso
+     * @return el valor del nodo
+     */
     public V search(K key) {
         TreeNode<K, V> current = root;
         while (current != null) {
@@ -41,34 +60,45 @@ public class BinarySearchTree<K, V> {
         return null;
     }
 
+    /**
+     * método que busca un nodo en el árbol por nombre
+     *
+     * @param nombre que será el nombre del producto
+     * @return el valor del nodo
+     */
     public V searchPorNombre(String nombre) {
-        return searchPorNombreRecursive(root, nombre);
+        return search2(root, nombre);
     }
 
-    private V searchPorNombreRecursive(TreeNode<K, V> node, String nombre) {
+    private V search2(TreeNode<K, V> node, String nombre) {
         if (node == null) {
             return null;
         }
-        Producto producto = (Producto) node.value; // Assume all values are Producto
+        Producto producto = (Producto) node.value; 
         if (producto.getNombre().equals(nombre)) {
             return node.value;
         }
-        V leftResult = searchPorNombreRecursive(node.left, nombre);
+        V leftResult = search2(node.left, nombre);
         if (leftResult != null) {
             return leftResult;
         }
-        return searchPorNombreRecursive(node.right, nombre);
+        return search2(node.right, nombre);
     }
 
+    /**
+     * método que recorre el árbol en orden
+     * no tiene parametros de entrada ni de salida porque solo imprime los valores
+     * que ya se tienen de los nodos en orden
+     */
     public void recorrer() {
-        recorrer(root);
+        recorrer2(root);
     }
 
-    private void recorrer(TreeNode<K, V> node) {
+    private void recorrer2(TreeNode<K, V> node) {
         if (node != null) {
-            recorrer(node.left);
+            recorrer2(node.left);
             System.out.println(node.value);
-            recorrer(node.right);
+            recorrer2(node.right);
         }
     }
 }
